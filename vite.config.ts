@@ -1,13 +1,13 @@
 import { defineConfig } from "vite";
-import solidPlugin from "vite-plugin-solid";
-import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  plugins: [solidPlugin(), tsconfigPaths()],
-  server: {
-    port: 3000,
-  },
-  build: {
-    target: "esnext",
-  },
+export default defineConfig(({ command, mode }) => {
+  const isProd = command === "build";
+
+  if (isProd) {
+    // eslint-disable-next-line no-undef
+    return require("./vite/prod.config").default({ mode });
+  }
+
+  // eslint-disable-next-line no-undef
+  return require("./vite/dev.config").default({ mode });
 });
